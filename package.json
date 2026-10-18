@@ -28,7 +28,8 @@
 		"dev:web": "turbo run dev -F web --",
 		"env:generate": "varlock codegen --path ./apps/web/",
 		"postinstall": "varlock codegen --path ./apps/web/",
-		"check": "biome check --write ."
+		"check": "biome check --write .",
+		"start": "bun run --filter web start"
 	},
 	"dependencies": {
 		"zod": "catalog:"
