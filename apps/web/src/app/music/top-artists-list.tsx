@@ -1,15 +1,16 @@
-import Image from "next/image";
-
+import { Artwork } from "@/components/artwork/artwork";
 import { GroupedList } from "@/components/grouped-list/grouped-list";
+import { findArtworkUrlByArtist, type TopAlbum } from "@/entities/top-album";
 import type { TopArtist } from "@/entities/top-artist";
 
 import { MusicRow } from "./music-row";
 
 export type TopArtistsListProps = {
 	artists: TopArtist[];
+	albums: TopAlbum[];
 };
 
-export function TopArtistsList({ artists }: TopArtistsListProps) {
+export function TopArtistsList({ artists, albums }: TopArtistsListProps) {
 	const topPlayCount = Math.max(...artists.map((artist) => artist.playCount));
 
 	return (
@@ -22,8 +23,8 @@ export function TopArtistsList({ artists }: TopArtistsListProps) {
 							<span className="w-[18px] shrink-0 text-center font-semibold text-[15px] text-muted-foreground tabular-nums">
 								{index + 1}
 							</span>
-							<Image
-								src={artist.imageUrl}
+							<Artwork
+								src={findArtworkUrlByArtist(albums, artist.name)}
 								alt={artist.name}
 								width={44}
 								height={44}

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 
 import "../index.css";
 import { SiteNav } from "@/components/site-nav/site-nav";
-import { nowPlaying } from "@/content/listening";
+import { getRecentTracks } from "@/http/get-recent-tracks";
 
 const inter = Inter({
 	variable: "--font-inter",
@@ -18,15 +18,17 @@ export const metadata: Metadata = {
 	description: "Founding Engineer at Notus Labs, from Suzano, Brazil.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const { latestTrack, isNowPlaying } = await getRecentTracks();
+
 	return (
 		<html lang="en" className={inter.variable}>
 			<body>
-				<SiteNav nowPlaying={nowPlaying} />
+				<SiteNav track={latestTrack} isNowPlaying={isNowPlaying} />
 				<main>{children}</main>
 			</body>
 		</html>

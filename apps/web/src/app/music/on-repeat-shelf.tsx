@@ -1,5 +1,4 @@
-import Image from "next/image";
-
+import { Artwork } from "@/components/artwork/artwork";
 import type { TopAlbum } from "@/entities/top-album";
 
 export type OnRepeatShelfProps = {
@@ -10,8 +9,8 @@ export function OnRepeatShelf({ albums }: OnRepeatShelfProps) {
 	return (
 		<div className="grid grid-cols-3 gap-[15px] sm:grid-cols-5">
 			{albums.map((album) => (
-				<div key={album.title} className="min-w-0">
-					<Image
+				<div key={`${album.artist}-${album.title}`} className="min-w-0">
+					<Artwork
 						src={album.artworkUrl}
 						alt={`${album.title} cover`}
 						width={300}

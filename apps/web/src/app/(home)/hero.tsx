@@ -33,7 +33,7 @@ export function Hero() {
 					width={88}
 					height={88}
 					preload
-					className="size-22 rounded-full object-cover shadow-[0_0_0_4px_rgb(0_0_0/0.6)]"
+					className="size-22 rounded-full object-cover shadow-[0_0_0_3px_rgb(0_0_0),0_0_0_4.5px_rgb(255_255_255/0.22),0_8px_24px_rgb(0_0_0/0.5)]"
 				/>
 				<h1 className="mt-5 font-bold text-[40px] leading-[1.06] tracking-[-0.03em] sm:text-5xl">
 					Thalles Passos

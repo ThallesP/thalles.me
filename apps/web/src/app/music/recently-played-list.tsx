@@ -1,22 +1,23 @@
-import Image from "next/image";
-
+import { Artwork } from "@/components/artwork/artwork";
 import { GroupedList } from "@/components/grouped-list/grouped-list";
 import type { RecentTrack } from "@/entities/recent-track";
 
+import { formatPlayedAgo } from "./format";
 import { MusicRow } from "./music-row";
 
 export type RecentlyPlayedListProps = {
 	tracks: RecentTrack[];
+	nowMs: number;
 };
 
-export function RecentlyPlayedList({ tracks }: RecentlyPlayedListProps) {
+export function RecentlyPlayedList({ tracks, nowMs }: RecentlyPlayedListProps) {
 	return (
 		<GroupedList>
 			{tracks.map((track) => (
 				<MusicRow
-					key={`${track.title}-${track.playedMinutesAgo}`}
+					key={`${track.title}-${track.playedAtMs}`}
 					leading={
-						<Image
+						<Artwork
 							src={track.artworkUrl}
 							alt=""
 							width={44}
@@ -28,7 +29,7 @@ export function RecentlyPlayedList({ tracks }: RecentlyPlayedListProps) {
 					description={track.artist}
 					trailing={
 						<span className="shrink-0 text-muted-foreground text-sm">
-							{track.playedMinutesAgo} min ago
+							{formatPlayedAgo(track.playedAtMs, nowMs)}
 						</span>
 					}
 				/>

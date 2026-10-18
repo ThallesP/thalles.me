@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
 			{ protocol: "https", hostname: "avatars.githubusercontent.com" },
 			{ protocol: "https", hostname: "*.mzstatic.com" },
 			{ protocol: "https", hostname: "lastfm.freetls.fastly.net" },
+			{ protocol: "https", hostname: "lastfm-img.freetls.fastly.net" },
 		],
 	},
 };

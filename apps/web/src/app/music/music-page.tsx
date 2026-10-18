@@ -1,16 +1,12 @@
+import { cacheLife } from "next/cache";
+
 import { PageColumn } from "@/components/page/page-column";
 import { PageHeader } from "@/components/page/page-header";
 import { Section } from "@/components/section/section";
 import { SiteFooter } from "@/components/site-footer/site-footer";
-import {
-	lastFmProfileUrl,
-	listeningUpdatedMinutesAgo,
-	nowPlaying,
-	nowPlayingReleaseYear,
-	onRepeat,
-	recentTracks,
-	topArtists,
-} from "@/content/listening";
+import { getRecentTracks } from "@/http/get-recent-tracks";
+import { getTopAlbums } from "@/http/get-top-albums";
+import { getTopArtists } from "@/http/get-top-artists";
 
 import { MusicMatchCard } from "./music-match-card";
 import { NowPlayingCard } from "./now-playing-card";
@@ -18,11 +14,16 @@ import { OnRepeatShelf } from "./on-repeat-shelf";
 import { RecentlyPlayedList } from "./recently-played-list";
 import { TopArtistsList } from "./top-artists-list";
 
-export function MusicPage() {
-	const updatedAgo = new Intl.RelativeTimeFormat("en").format(
-		-listeningUpdatedMinutesAgo,
-		"minute",
-	);
+export async function MusicPage() {
+	"use cache";
+	cacheLife("minutes");
+
+	const [{ latestTrack, isNowPlaying, recentTracks }, topArtists, topAlbums] =
+		await Promise.all([
+			getRecentTracks(),
+			getTopArtists({ period: "1month" }),
+			getTopAlbums(),
+		]);
 
 	return (
 		<PageColumn>
@@ -31,26 +32,26 @@ export function MusicPage() {
 				subtitle="Everything here comes from my Last.fm, live."
 			/>
 			<section className="mt-14">
-				<NowPlayingCard
-					track={nowPlaying}
-					releaseYear={nowPlayingReleaseYear}
-				/>
+				<NowPlayingCard track={latestTrack} isNowPlaying={isNowPlaying} />
 			</section>
 			<Section
 				title="Top artists this month"
 				action={
-					<a href={lastFmProfileUrl} className="text-[15px] text-link">
+					<a
+						href="https://www.last.fm/user/thallesp"
+						className="text-[15px] text-link"
+					>
 						Last.fm profile
 					</a>
 				}
 			>
-				<TopArtistsList artists={topArtists} />
+				<TopArtistsList artists={topArtists} albums={topAlbums} />
 			</Section>
 			<Section title="On repeat">
-				<OnRepeatShelf albums={onRepeat} />
+				<OnRepeatShelf albums={topAlbums.slice(0, 5)} />
 			</Section>
 			<Section title="Recently played">
-				<RecentlyPlayedList tracks={recentTracks} />
+				<RecentlyPlayedList tracks={recentTracks} nowMs={Date.now()} />
 			</Section>
 			<section className="mt-14">
 				<MusicMatchCard />
@@ -60,7 +61,7 @@ export function MusicPage() {
 					<>
 						Music from Last.fm, code from GitHub.
 						<br />
-						Updated {updatedAgo}.
+						Updated every few minutes.
 					</>
 				}
 			/>

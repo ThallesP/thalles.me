@@ -17,10 +17,11 @@ const links = [
 ] as const;
 
 export type SiteNavProps = {
-	nowPlaying: Track;
+	track: Track;
+	isNowPlaying: boolean;
 };
 
-export function SiteNav({ nowPlaying }: SiteNavProps) {
+export function SiteNav({ track, isNowPlaying }: SiteNavProps) {
 	const pathname = usePathname();
 
 	return (
@@ -43,7 +44,7 @@ export function SiteNav({ nowPlaying }: SiteNavProps) {
 					aria-hidden
 					className="mx-1 hidden h-5 w-px bg-white/20 sm:block"
 				/>
-				<NowPlayingChip track={nowPlaying} />
+				<NowPlayingChip track={track} isNowPlaying={isNowPlaying} />
 			</nav>
 		</header>
 	);

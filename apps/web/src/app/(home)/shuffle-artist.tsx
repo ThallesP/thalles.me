@@ -4,12 +4,13 @@ import { cn } from "@thalles-me/ui/lib/utils";
 import { Shuffle } from "lucide-react";
 import { useState } from "react";
 
-import { shuffleArtists } from "@/content/home-shuffle-artists";
+export type ShuffleArtistProps = {
+	artists: string[];
+};
 
-const labels = ["music", ...shuffleArtists];
-
-export function ShuffleArtist() {
+export function ShuffleArtist({ artists }: ShuffleArtistProps) {
 	const [shuffleCount, setShuffleCount] = useState(0);
+	const labels = ["music", ...artists];
 	const label = labels[shuffleCount % labels.length];
 	const hasShuffled = shuffleCount > 0;
 
