@@ -1,40 +1,34 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 
 import "../index.css";
-import Header from "@/components/header";
-import Providers from "@/components/providers";
+import { SiteNav } from "@/components/site-nav/site-nav";
+import { nowPlaying } from "@/content/listening";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const inter = Inter({
+	variable: "--font-inter",
+	subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "thalles-me",
-  description: "thalles-me",
+	title: {
+		default: "Thalles Passos",
+		template: "%s · Thalles Passos",
+	},
+	description: "Founding Engineer at Notus Labs, from Suzano, Brazil.",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>
-          <div className="grid grid-rows-[auto_1fr] h-svh">
-            <Header />
-            {children}
-          </div>
-        </Providers>
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" className={inter.variable}>
+			<body>
+				<SiteNav nowPlaying={nowPlaying} />
+				{children}
+			</body>
+		</html>
+	);
 }
