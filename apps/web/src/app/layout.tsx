@@ -27,7 +27,7 @@ export default function RootLayout({
 		<html lang="en" className={inter.variable}>
 			<body>
 				<SiteNav nowPlaying={nowPlaying} />
-				{children}
+				<main>{children}</main>
 			</body>
 		</html>
 	);

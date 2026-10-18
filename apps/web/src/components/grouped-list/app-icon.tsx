@@ -2,7 +2,7 @@ import { cn } from "@thalles-me/ui/lib/utils";
 
 const sizeClass = {
 	sm: "size-9 rounded-[9px] [&_svg]:size-5",
-	md: "size-[52px] rounded-xl [&_svg]:size-7",
+	md: "size-[52px] rounded-[12px] [&_svg]:size-7",
 } as const;
 
 export type AppIconProps = {

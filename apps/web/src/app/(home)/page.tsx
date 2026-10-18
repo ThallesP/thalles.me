@@ -1,10 +1,5 @@
-import { PageColumn } from "@/components/page/page-column";
-import { PageHeader } from "@/components/page/page-header";
+import { HomePage } from "./home-page";
 
-export default function HomePage() {
-	return (
-		<PageColumn>
-			<PageHeader title="Thalles Passos" subtitle="Coming soon." />
-		</PageColumn>
-	);
+export default function Page() {
+	return <HomePage />;
 }

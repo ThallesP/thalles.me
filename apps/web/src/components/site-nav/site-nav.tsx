@@ -25,14 +25,14 @@ export function SiteNav({ nowPlaying }: SiteNavProps) {
 
 	return (
 		<header className="sticky top-0 z-50 flex justify-center px-3 py-3.5">
-			<nav className="flex items-center gap-1 rounded-full bg-card/60 p-1.5 shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.14),0_8px_24px_rgb(0_0_0/0.4)] backdrop-blur-xl backdrop-saturate-150">
+			<nav className="flex items-center gap-0.5 rounded-full bg-card/60 p-1 shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.14),0_8px_24px_rgb(0_0_0/0.4)] backdrop-blur-xl backdrop-saturate-150 sm:gap-1 sm:p-1.5">
 				{links.map(({ href, label }) => (
 					<Link
 						key={href}
 						href={href}
 						aria-current={pathname === href ? "page" : undefined}
 						className={cn(
-							"rounded-full px-4 py-1.5 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground",
+							"rounded-full px-3 py-1.5 font-medium text-[13px] text-muted-foreground transition-colors hover:text-foreground sm:px-4 sm:text-sm",
 							"aria-[current=page]:bg-primary aria-[current=page]:text-primary-foreground",
 						)}
 					>

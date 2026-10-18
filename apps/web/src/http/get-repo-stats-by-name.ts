@@ -14,16 +14,21 @@ export async function getRepoStatsByName() {
 	"use cache";
 	cacheLife("hours");
 
-	const response = await fetch(
-		"https://api.github.com/users/ThallesP/repos?per_page=100&sort=pushed",
-		{
-			headers: { Accept: "application/vnd.github+json" },
-		},
-	);
-	if (!response.ok)
-		throw new Error(`GitHub repos request failed with ${response.status}`);
+	const repos: GitHubRepo[] = [];
+	for (let page = 1; ; page++) {
+		const response = await fetch(
+			`https://api.github.com/users/ThallesP/repos?per_page=100&sort=pushed&page=${page}`,
+			{
+				headers: { Accept: "application/vnd.github+json" },
+			},
+		);
+		if (!response.ok)
+			throw new Error(`GitHub repos request failed with ${response.status}`);
 
-	const repos: GitHubRepo[] = await response.json();
+		const pageRepos: GitHubRepo[] = await response.json();
+		repos.push(...pageRepos);
+		if (pageRepos.length < 100) break;
+	}
 
 	return Object.fromEntries(
 		repos.map((repo): [string, RepoStats] => [

@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
 
-import { PageColumn } from "@/components/page/page-column";
-import { PageHeader } from "@/components/page/page-header";
+import { SetupPage } from "./setup-page";
 
 export const metadata: Metadata = {
 	title: "Setup",
 };
 
-export default function SetupPage() {
-	return (
-		<PageColumn>
-			<PageHeader title="Setup" subtitle="Coming soon." />
-		</PageColumn>
-	);
+export default function Page() {
+	return <SetupPage />;
 }

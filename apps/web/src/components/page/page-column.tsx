@@ -7,8 +7,8 @@ export type PageColumnProps = {
 
 export function PageColumn({ className, children }: PageColumnProps) {
 	return (
-		<main className={cn("mx-auto w-full max-w-[760px] px-5", className)}>
+		<div className={cn("mx-auto w-full max-w-[760px] px-5", className)}>
 			{children}
-		</main>
+		</div>
 	);
 }
