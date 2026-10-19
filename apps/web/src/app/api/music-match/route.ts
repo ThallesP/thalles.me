@@ -24,7 +24,7 @@ import {
 	SpotifyPlaylistNotFoundError,
 	SpotifyUserNotFoundError,
 } from "@/lib/spotify-taste-profile";
-import { writeIcebreaker } from "@/lib/write-icebreaker";
+import { writeIcebreakers } from "@/lib/write-icebreakers";
 
 const MY_ARTISTS_LIMIT = 500;
 const MY_TRACKS_LIMIT = 200;
@@ -82,11 +82,13 @@ export async function GET(request: Request) {
 			}),
 			getTopAlbums(),
 		]);
-		const { sharedArtists, comparedCount, songs } = compareTastes({
-			visitor,
-			myArtists,
-			myTracks,
-		});
+		const { sharedArtists, sharedTracks, comparedCount, songs } = compareTastes(
+			{
+				visitor,
+				myArtists,
+				myTracks,
+			},
+		);
 		const [shownArtists, matchSongs] = await Promise.all([
 			Promise.all(
 				sharedArtists.slice(0, SHOWN_ARTISTS_LIMIT).map(
@@ -126,7 +128,12 @@ export async function GET(request: Request) {
 			sharedCount: sharedArtists.length,
 			comparedCount,
 			songs: matchSongs,
-			icebreaker: writeIcebreaker(visitor.source, sharedArtists),
+			icebreakers: writeIcebreakers({
+				visitor,
+				sharedArtists,
+				sharedTracks,
+				comparedCount,
+			}),
 		};
 
 		return Response.json(match);

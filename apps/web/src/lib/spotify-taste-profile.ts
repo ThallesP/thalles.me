@@ -1,5 +1,6 @@
 import type { TasteProfile } from "@/entities/taste-profile";
 import type { TopArtist } from "@/entities/top-artist";
+import type { TopTrack } from "@/entities/top-track";
 import {
 	getSpotifyPlaylist,
 	type SpotifyPlaylist,
@@ -25,6 +26,16 @@ async function resolveLink(input: string): Promise<SpotifyLink> {
 	if (resolvedLink === null) throw new SpotifyLinkNotSupportedError(input);
 
 	return resolvedLink;
+}
+
+function listTracks(playlists: SpotifyPlaylist[]): TopTrack[] {
+	return playlists.flatMap(({ tracks }) =>
+		tracks.map(({ title, artists: [artist] }) => ({
+			title,
+			artist,
+			playCount: 1,
+		})),
+	);
 }
 
 function countArtists(playlists: SpotifyPlaylist[]): TopArtist[] {
@@ -54,6 +65,7 @@ async function getPlaylistTasteProfile(id: string): Promise<TasteProfile> {
 		avatarUrl: playlist.coverUrl,
 		playUnit: "tracks",
 		artists: countArtists([playlist]),
+		tracks: listTracks([playlist]),
 	};
 }
 
@@ -62,9 +74,13 @@ async function getUserTasteProfile(id: string): Promise<TasteProfile> {
 	if (user === null)
 		throw new SpotifyUserNotFoundError(`Spotify user ${id} not found`);
 
-	const playlists = await Promise.all(
-		user.playlistIds.slice(0, PROFILE_PLAYLISTS_LIMIT).map(getSpotifyPlaylist),
-	);
+	const playlists = (
+		await Promise.all(
+			user.playlistIds
+				.slice(0, PROFILE_PLAYLISTS_LIMIT)
+				.map(getSpotifyPlaylist),
+		)
+	).filter((playlist) => playlist !== null);
 
 	return {
 		source: "spotify",
@@ -72,7 +88,8 @@ async function getUserTasteProfile(id: string): Promise<TasteProfile> {
 		url: user.url,
 		avatarUrl: user.avatarUrl,
 		playUnit: "tracks",
-		artists: countArtists(playlists.filter((playlist) => playlist !== null)),
+		artists: countArtists(playlists),
+		tracks: listTracks(playlists),
 	};
 }
 

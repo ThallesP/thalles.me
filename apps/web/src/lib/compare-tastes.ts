@@ -8,10 +8,18 @@ export type SharedArtist = {
 	name: string;
 	visitorPlayCount: number;
 	myPlayCount: number;
+	visitorRank: number;
+	myRank: number;
+};
+
+export type SharedTrack = {
+	title: string;
+	artist: string;
 };
 
 export type TasteComparison = {
 	sharedArtists: SharedArtist[];
+	sharedTracks: SharedTrack[];
 	comparedCount: number;
 	songs: TopTrack[];
 };
@@ -22,8 +30,12 @@ export type CompareTastesInput = {
 	myTracks: TopTrack[];
 };
 
-export function normalizeArtistName(name: string) {
+export function normalizeName(name: string) {
 	return name.trim().toLowerCase();
+}
+
+function trackKey({ title, artist }: TopTrack) {
+	return `${normalizeName(artist)} - ${normalizeName(title)}`;
 }
 
 function pickSongs(tracks: TopTrack[]) {
@@ -43,30 +55,42 @@ export function compareTastes({
 	myTracks,
 }: CompareTastesInput): TasteComparison {
 	const myArtistsByName = new Map(
-		myArtists.map((artist) => [normalizeArtistName(artist.name), artist]),
+		myArtists.map((artist, index) => [
+			normalizeName(artist.name),
+			{ artist, rank: index + 1 },
+		]),
 	);
-	const sharedArtists = visitor.artists.flatMap((artist): SharedArtist[] => {
-		const mine = myArtistsByName.get(normalizeArtistName(artist.name));
-		if (mine === undefined) return [];
+	const sharedArtists = visitor.artists.flatMap(
+		(artist, index): SharedArtist[] => {
+			const mine = myArtistsByName.get(normalizeName(artist.name));
+			if (mine === undefined) return [];
 
-		return [
-			{
-				name: mine.name,
-				visitorPlayCount: artist.playCount,
-				myPlayCount: mine.playCount,
-			},
-		];
-	});
-	const sharedNames = new Set(
-		sharedArtists.map((artist) => normalizeArtistName(artist.name)),
+			return [
+				{
+					name: mine.artist.name,
+					visitorPlayCount: artist.playCount,
+					myPlayCount: mine.artist.playCount,
+					visitorRank: index + 1,
+					myRank: mine.rank,
+				},
+			];
+		},
 	);
-	const sharedTracks = myTracks.filter((track) =>
-		sharedNames.has(normalizeArtistName(track.artist)),
+	const sharedNames = new Set(
+		sharedArtists.map((artist) => normalizeName(artist.name)),
+	);
+	const myTrackKeys = new Set(myTracks.map(trackKey));
+	const sharedTracks = visitor.tracks
+		.filter((track) => myTrackKeys.has(trackKey(track)))
+		.map(({ title, artist }): SharedTrack => ({ title, artist }));
+	const sharedArtistTracks = myTracks.filter((track) =>
+		sharedNames.has(normalizeName(track.artist)),
 	);
 
 	return {
 		sharedArtists,
+		sharedTracks,
 		comparedCount: visitor.artists.length,
-		songs: pickSongs([...sharedTracks, ...myTracks]),
+		songs: pickSongs([...sharedArtistTracks, ...myTracks]),
 	};
 }

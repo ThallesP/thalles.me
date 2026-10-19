@@ -1,4 +1,3 @@
-import { buttonVariants } from "@thalles-me/ui/components/button";
 import {
 	ArrowUpRight,
 	Headphones,
@@ -12,12 +11,11 @@ import type {
 	MatchedArtist,
 	MatchSong,
 	MusicMatch,
-	MusicMatchVisitor,
 } from "@/entities/music-match";
 import type { PlayUnit } from "@/entities/taste-profile";
 import { getSpotifySearchUrl } from "@/lib/spotify-search-url";
 
-const CONTACT_EMAIL = "contato@thalles.me";
+import { IcebreakerCard } from "./icebreaker-card";
 
 const formatCount = new Intl.NumberFormat("en-US").format;
 
@@ -156,13 +154,6 @@ function SongsList({ songs }: { songs: MatchSong[] }) {
 	);
 }
 
-function getWriteMeUrl(visitor: MusicMatchVisitor, icebreaker: string) {
-	const subject = encodeURIComponent(`${visitor.name} from thalles.me`);
-	const body = encodeURIComponent(icebreaker);
-
-	return `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
-}
-
 export type MusicMatchResultProps = {
 	match: MusicMatch;
 };
@@ -189,17 +180,10 @@ export function MusicMatchResult({ match }: MusicMatchResultProps) {
 				<SongsList songs={match.songs} />
 			</Block>
 			<Block icon={MessageCircle} title="Something to say when you write me">
-				<div className="flex flex-col gap-3 rounded-2xl bg-card-raised px-4 py-3.5 sm:flex-row sm:items-center">
-					<p className="flex-1 text-[15px] leading-snug">
-						“{match.icebreaker}”
-					</p>
-					<a
-						href={getWriteMeUrl(match.visitor, match.icebreaker)}
-						className={buttonVariants({ variant: "tinted", size: "sm" })}
-					>
-						Write me
-					</a>
-				</div>
+				<IcebreakerCard
+					visitor={match.visitor}
+					icebreakers={match.icebreakers}
+				/>
 			</Block>
 		</div>
 	);

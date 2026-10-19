@@ -1,4 +1,5 @@
 import type { TopArtist } from "./top-artist";
+import type { TopTrack } from "./top-track";
 
 export type TasteSource = "lastfm" | "spotify";
 
@@ -11,4 +12,5 @@ export type TasteProfile = {
 	avatarUrl: string | null;
 	playUnit: PlayUnit;
 	artists: TopArtist[];
+	tracks: TopTrack[];
 };

@@ -28,5 +28,5 @@ export type MusicMatch = {
 	sharedCount: number;
 	comparedCount: number;
 	songs: MatchSong[];
-	icebreaker: string;
+	icebreakers: string[];
 };
