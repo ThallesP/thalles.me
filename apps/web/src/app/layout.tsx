@@ -23,12 +23,12 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const { latestTrack, isNowPlaying } = await getRecentTracks();
+	const listening = await getRecentTracks("page");
 
 	return (
 		<html lang="en" className={inter.variable}>
 			<body>
-				<SiteNav track={latestTrack} isNowPlaying={isNowPlaying} />
+				<SiteNav listening={listening} />
 				<main>{children}</main>
 			</body>
 		</html>

@@ -4,7 +4,7 @@ import { cn } from "@thalles-me/ui/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import type { Track } from "@/entities/track";
+import type { Listening } from "@/entities/listening";
 
 import { NowPlayingChip } from "./now-playing-chip";
 
@@ -17,11 +17,10 @@ const links = [
 ] as const;
 
 export type SiteNavProps = {
-	track: Track;
-	isNowPlaying: boolean;
+	listening: Listening;
 };
 
-export function SiteNav({ track, isNowPlaying }: SiteNavProps) {
+export function SiteNav({ listening }: SiteNavProps) {
 	const pathname = usePathname();
 
 	return (
@@ -44,7 +43,7 @@ export function SiteNav({ track, isNowPlaying }: SiteNavProps) {
 					aria-hidden
 					className="mx-1 hidden h-5 w-px bg-white/20 sm:block"
 				/>
-				<NowPlayingChip track={track} isNowPlaying={isNowPlaying} />
+				<NowPlayingChip listening={listening} />
 			</nav>
 		</header>
 	);

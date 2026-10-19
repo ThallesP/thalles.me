@@ -7,23 +7,21 @@ import { SiteFooter } from "@/components/site-footer/site-footer";
 import { getRecentTracks } from "@/http/get-recent-tracks";
 import { getTopAlbums } from "@/http/get-top-albums";
 import { getTopArtists } from "@/http/get-top-artists";
-
+import { LiveNowPlayingCard } from "./live-now-playing-card";
+import { LiveRecentlyPlayedList } from "./live-recently-played-list";
 import { MusicMatchCard } from "./music-match-card";
-import { NowPlayingCard } from "./now-playing-card";
 import { OnRepeatShelf } from "./on-repeat-shelf";
-import { RecentlyPlayedList } from "./recently-played-list";
 import { TopArtistsList } from "./top-artists-list";
 
 export async function MusicPage() {
 	"use cache";
 	cacheLife("minutes");
 
-	const [{ latestTrack, isNowPlaying, recentTracks }, topArtists, topAlbums] =
-		await Promise.all([
-			getRecentTracks(),
-			getTopArtists({ period: "1month" }),
-			getTopAlbums(),
-		]);
+	const [listening, topArtists, topAlbums] = await Promise.all([
+		getRecentTracks("page"),
+		getTopArtists({ period: "1month" }),
+		getTopAlbums(),
+	]);
 
 	return (
 		<PageColumn>
@@ -32,7 +30,7 @@ export async function MusicPage() {
 				subtitle="Everything here comes from my Last.fm, live."
 			/>
 			<section className="mt-14">
-				<NowPlayingCard track={latestTrack} isNowPlaying={isNowPlaying} />
+				<LiveNowPlayingCard listening={listening} />
 			</section>
 			<Section
 				title="Top artists this month"
@@ -51,7 +49,7 @@ export async function MusicPage() {
 				<OnRepeatShelf albums={topAlbums.slice(0, 5)} />
 			</Section>
 			<Section title="Recently played">
-				<RecentlyPlayedList tracks={recentTracks} nowMs={Date.now()} />
+				<LiveRecentlyPlayedList listening={listening} />
 			</Section>
 			<section className="mt-14">
 				<MusicMatchCard />
@@ -61,7 +59,7 @@ export async function MusicPage() {
 					<>
 						Music from Last.fm, code from GitHub.
 						<br />
-						Updated every few minutes.
+						Updates live while you're here.
 					</>
 				}
 			/>

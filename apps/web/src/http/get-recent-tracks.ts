@@ -1,5 +1,6 @@
 import { cacheLife } from "next/cache";
 
+import type { Listening } from "@/entities/listening";
 import type { RecentTrack } from "@/entities/recent-track";
 import type { Track } from "@/entities/track";
 import { ENV } from "@/env.server";
@@ -42,9 +43,16 @@ function toTrack({ name, artist, album, image }: LastFmTrack): Track {
 	};
 }
 
-export async function getRecentTracks() {
+const cacheProfiles = {
+	page: { stale: 300, revalidate: 60, expire: 3600 },
+	live: { stale: 30, revalidate: 10, expire: 60 },
+} as const;
+
+export async function getRecentTracks(
+	cacheProfile: keyof typeof cacheProfiles,
+): Promise<Listening> {
 	"use cache";
-	cacheLife("minutes");
+	cacheLife(cacheProfiles[cacheProfile]);
 
 	const search = new URLSearchParams({
 		method: "user.getrecenttracks",
@@ -76,5 +84,6 @@ export async function getRecentTracks() {
 		latestTrack: toTrack(latestTrack),
 		isNowPlaying: latestTrack["@attr"] !== undefined,
 		recentTracks,
+		fetchedAtMs: Date.now(),
 	};
 }

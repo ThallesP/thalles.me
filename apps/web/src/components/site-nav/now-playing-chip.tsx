@@ -1,14 +1,15 @@
 import Link from "next/link";
 
 import { Artwork } from "@/components/artwork/artwork";
-import type { Track } from "@/entities/track";
+import type { Listening } from "@/entities/listening";
+import { useListening } from "@/hooks/use-listening";
 
 export type NowPlayingChipProps = {
-	track: Track;
-	isNowPlaying: boolean;
+	listening: Listening;
 };
 
-export function NowPlayingChip({ track, isNowPlaying }: NowPlayingChipProps) {
+export function NowPlayingChip({ listening }: NowPlayingChipProps) {
+	const { latestTrack: track, isNowPlaying } = useListening(listening);
 	const label = isNowPlaying ? "Listening to" : "Last played";
 
 	return (
