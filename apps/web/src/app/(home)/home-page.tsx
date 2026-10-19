@@ -17,7 +17,7 @@ export function HomePage() {
 				<SiteFooter
 					sources={
 						<>
-							Music data powered by AudioScrobbler.
+							Music from Last.fm.
 							<br />
 							Code from GitHub.
 						</>

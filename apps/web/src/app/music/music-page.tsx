@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site-footer/site-footer";
 import { getRecentTracks } from "@/http/get-recent-tracks";
 import { getTopAlbums } from "@/http/get-top-albums";
 import { getTopArtists } from "@/http/get-top-artists";
+import { LASTFM_USERNAME } from "@/http/lastfm";
 import { LiveNowPlayingCard } from "./live-now-playing-card";
 import { LiveRecentlyPlayedList } from "./live-recently-played-list";
 import { MusicMatchCard } from "./music-match-card";
@@ -19,7 +20,7 @@ export async function MusicPage() {
 
 	const [listening, topArtists, topAlbums] = await Promise.all([
 		getRecentTracks("page"),
-		getTopArtists({ period: "1month" }),
+		getTopArtists({ username: LASTFM_USERNAME, period: "1month", limit: 6 }),
 		getTopAlbums(),
 	]);
 

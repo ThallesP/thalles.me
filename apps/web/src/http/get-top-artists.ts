@@ -3,8 +3,6 @@ import { cacheLife } from "next/cache";
 import type { TopArtist } from "@/entities/top-artist";
 import { ENV } from "@/env.server";
 
-import { LASTFM_USERNAME } from "./lastfm";
-
 type TopArtistsResponse = {
 	topartists: {
 		artist: {
@@ -15,20 +13,26 @@ type TopArtistsResponse = {
 };
 
 export type GetTopArtistsInput = {
+	username: string;
 	period: "overall" | "7day" | "1month" | "3month" | "6month" | "12month";
+	limit: number;
 };
 
-export async function getTopArtists({ period }: GetTopArtistsInput) {
+export async function getTopArtists({
+	username,
+	period,
+	limit,
+}: GetTopArtistsInput) {
 	"use cache";
 	cacheLife("hours");
 
 	const search = new URLSearchParams({
 		method: "user.gettopartists",
-		user: LASTFM_USERNAME,
+		user: username,
 		api_key: ENV.LASTFM_API_KEY,
 		format: "json",
 		period,
-		limit: "6",
+		limit: String(limit),
 	});
 	const response = await fetch(`https://ws.audioscrobbler.com/2.0/?${search}`);
 	if (!response.ok)

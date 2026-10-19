@@ -11,8 +11,8 @@ export function MusicMatchCard() {
 					Do we like the same music?
 				</div>
 				<div className="mt-0.5 text-[15px] text-muted-foreground leading-[1.4]">
-					Type your Last.fm username on the home page and I'll find what we both
-					listen to.
+					Drop your Last.fm username or a Spotify playlist on the home page and
+					I'll find what we both listen to.
 				</div>
 			</div>
 			<Link href="/#music-match" className={buttonVariants()}>
