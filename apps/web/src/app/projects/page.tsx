@@ -3,8 +3,8 @@ import { cacheLife } from "next/cache";
 
 import { railwayTemplates } from "@/content/projects-templates";
 import { getRepoStatsByName } from "@/http/get-repo-stats-by-name";
-
 import { getTemplateDeploysByCode } from "@/http/get-template-deploys-by-code";
+
 import { ProjectsPage } from "./projects-page";
 
 export const metadata: Metadata = {
@@ -24,7 +24,6 @@ export default async function Page() {
 		<ProjectsPage
 			repoStatsByName={repoStatsByName}
 			deploysByCode={deploysByCode}
-			nowMs={Date.now()}
 		/>
 	);
 }

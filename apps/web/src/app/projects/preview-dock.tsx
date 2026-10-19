@@ -1,6 +1,7 @@
 import { cn } from "@thalles-me/ui/lib/utils";
 import Image from "next/image";
 
+import { AppIcon } from "@/components/grouped-list/app-icon";
 import type { BrowserWorkProject } from "@/content/projects-work";
 
 export type PreviewDockProps = {
@@ -32,14 +33,9 @@ export function PreviewDock({
 		>
 			{project && (
 				<>
-					<Image
-						src={project.screenshot.src}
-						alt=""
-						width={34}
-						height={34}
-						sizes="34px"
-						className="size-[34px] rounded-[9px] object-cover object-top shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.2)]"
-					/>
+					<AppIcon size="sm">
+						<Image src={project.glyphSrc} alt="" width={20} height={20} />
+					</AppIcon>
 					{project.domain}
 				</>
 			)}

@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useImperativeHandle, useRef } from "react";
 
 import type { BrowserWorkProject } from "@/content/projects-work";
@@ -16,6 +15,7 @@ import {
 	shrinkInPlace,
 	shrinkTo,
 } from "./window-animation";
+import { WorkScreen } from "./work-screen";
 
 export type PreviewWindowHandle = {
 	show: (source: Box) => void;
@@ -114,16 +114,7 @@ export function PreviewWindow({
 					ref={bodyRef}
 					className="flex-1 overflow-y-auto overscroll-contain bg-black [scrollbar-color:rgb(152_152_157/0.6)_transparent] [scrollbar-width:thin]"
 				>
-					{project && (
-						<Image
-							src={project.screenshot.src}
-							alt={`${project.domain}, full page`}
-							width={project.screenshot.width}
-							height={project.screenshot.height}
-							sizes="(max-width: 968px) 100vw, 920px"
-							className="block h-auto w-full"
-						/>
-					)}
+					{project && <WorkScreen screen={project.screen} />}
 				</div>
 			</div>
 		</dialog>

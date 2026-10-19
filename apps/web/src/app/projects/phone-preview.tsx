@@ -1,15 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
 
 import type { PhoneWorkProject } from "@/content/projects-work";
 
 export type PhonePreviewProps = {
 	project: PhoneWorkProject;
+	children: React.ReactNode;
 };
 
-export function PhonePreview({ project }: PhonePreviewProps) {
+export function PhonePreview({ project, children }: PhonePreviewProps) {
 	const scrollerRef = useRef<HTMLElement>(null);
 	const trackRef = useRef<HTMLDivElement>(null);
 	const [thumb, setThumb] = useState({ heightPx: 30, offsetPx: 0 });
@@ -29,6 +29,12 @@ export function PhonePreview({ project }: PhonePreviewProps) {
 			heightPx,
 			offsetPx: (track.clientHeight - heightPx) * progress,
 		});
+	}
+
+	function observeContentSize(node: HTMLDivElement) {
+		const observer = new ResizeObserver(syncThumb);
+		observer.observe(node);
+		return () => observer.disconnect();
 	}
 
 	return (
@@ -61,15 +67,9 @@ export function PhonePreview({ project }: PhonePreviewProps) {
 					onScroll={syncThumb}
 					className="absolute inset-x-0 top-11 bottom-0 overflow-y-auto overscroll-contain outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset [&::-webkit-scrollbar]:hidden"
 				>
-					<Image
-						src={project.screens.src}
-						alt={project.screens.alt}
-						width={project.screens.width}
-						height={project.screens.height}
-						sizes="250px"
-						onLoad={syncThumb}
-						className="block h-auto w-full"
-					/>
+					<div ref={observeContentSize} className="grid min-h-full">
+						{children}
+					</div>
 				</section>
 				<div
 					ref={trackRef}

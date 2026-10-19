@@ -10,13 +10,11 @@ import { WorkSection } from "./work-section";
 export type ProjectsPageProps = {
 	repoStatsByName: Record<string, RepoStats>;
 	deploysByCode: Record<string, number>;
-	nowMs: number;
 };
 
 export function ProjectsPage({
 	repoStatsByName,
 	deploysByCode,
-	nowMs,
 }: ProjectsPageProps) {
 	return (
 		<div className="overflow-x-clip">
@@ -34,7 +32,7 @@ export function ProjectsPage({
 						</>
 					}
 				/>
-				<OpenSourceSection repoStatsByName={repoStatsByName} nowMs={nowMs} />
+				<OpenSourceSection repoStatsByName={repoStatsByName} />
 				<WorkSection />
 				<TemplatesSection deploysByCode={deploysByCode} />
 				<SiteFooter sources="Stars and pushes from GitHub, deploys from Railway." />

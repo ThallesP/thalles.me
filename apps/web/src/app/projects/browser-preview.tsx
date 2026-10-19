@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 import type { BrowserWorkProject } from "@/content/projects-work";
 
 import { AddressBar } from "./address-bar";
@@ -10,6 +8,7 @@ export type BrowserPreviewProps = {
 	onClose: () => void;
 	onMinimize: () => void;
 	onZoom: () => void;
+	children: React.ReactNode;
 };
 
 export function BrowserPreview({
@@ -17,6 +16,7 @@ export function BrowserPreview({
 	onClose,
 	onMinimize,
 	onZoom,
+	children,
 }: BrowserPreviewProps) {
 	return (
 		<div className="flex h-60 w-[360px] max-w-full flex-col overflow-hidden rounded-2xl bg-card-raised shadow-[0_0_0_0.5px_rgb(255_255_255/0.16),0_24px_60px_rgb(0_0_0/0.65),0_4px_14px_rgb(0_0_0/0.45)]">
@@ -30,14 +30,7 @@ export function BrowserPreview({
 					<AddressBar domain={project.domain} />
 				</span>
 			</div>
-			<Image
-				src={project.screenshot.src}
-				alt=""
-				width={project.screenshot.width}
-				height={project.screenshot.height}
-				sizes="360px"
-				className="min-h-0 w-full flex-1 object-cover object-top"
-			/>
+			<div className="min-h-0 flex-1 overflow-hidden">{children}</div>
 		</div>
 	);
 }

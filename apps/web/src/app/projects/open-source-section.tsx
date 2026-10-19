@@ -7,13 +7,9 @@ import { OpenSourceRow } from "./open-source-row";
 
 export type OpenSourceSectionProps = {
 	repoStatsByName: Record<string, RepoStats>;
-	nowMs: number;
 };
 
-export function OpenSourceSection({
-	repoStatsByName,
-	nowMs,
-}: OpenSourceSectionProps) {
+export function OpenSourceSection({ repoStatsByName }: OpenSourceSectionProps) {
 	return (
 		<Section
 			title="Open source"
@@ -32,7 +28,6 @@ export function OpenSourceSection({
 						key={project.repoName}
 						project={project}
 						stats={repoStatsByName[project.repoName]}
-						nowMs={nowMs}
 					/>
 				))}
 			</GroupedList>

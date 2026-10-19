@@ -1,13 +1,14 @@
 import { cn } from "@thalles-me/ui/lib/utils";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import { AppIcon } from "@/components/grouped-list/app-icon";
 import type { BrowserWorkProject, WorkProject } from "@/content/projects-work";
 
 import { BrowserPreview } from "./browser-preview";
 import { PhonePreview } from "./phone-preview";
+import { WorkScreen } from "./work-screen";
 
 export type WorkRowAnchors = {
 	card: HTMLElement;
@@ -18,7 +19,7 @@ const popoverPlacement: Record<WorkProject["kind"], string> = {
 	browser:
 		"md:right-5 md:bottom-[calc(100%-12px)] md:origin-bottom-right md:translate-y-1.5 md:scale-98 md:data-[state=open]:translate-y-0 md:data-[state=open]:scale-100",
 	phone:
-		"md:right-5 md:bottom-[calc(100%-12px)] md:origin-bottom-right md:translate-y-1.5 md:scale-98 md:data-[state=open]:translate-y-0 md:data-[state=open]:scale-100 min-[1300px]:top-1/2 min-[1300px]:right-[-252px] min-[1300px]:bottom-auto min-[1300px]:origin-left min-[1300px]:translate-y-[calc(-50%+6px)] min-[1300px]:data-[state=open]:-translate-y-1/2",
+		"md:top-1/2 md:right-5 md:origin-right md:translate-y-[calc(-50%+6px)] md:scale-98 md:data-[state=open]:-translate-y-1/2 md:data-[state=open]:scale-100 min-[1300px]:right-[-252px] min-[1300px]:origin-left",
 };
 
 type WindowAction = (
@@ -51,6 +52,9 @@ export function WorkRow({
 }: WorkRowProps) {
 	const cardRef = useRef<HTMLDivElement>(null);
 	const titleRef = useRef<HTMLAnchorElement>(null);
+	const [isScreenRequested, setIsScreenRequested] = useState(false);
+
+	const screen = isScreenRequested && <WorkScreen screen={project.screen} />;
 
 	function handleWindowAction(
 		browserProject: BrowserWorkProject,
@@ -67,6 +71,7 @@ export function WorkRow({
 	}
 
 	function handlePointerEnter(event: React.PointerEvent) {
+		setIsScreenRequested(true);
 		if (event.pointerType === "mouse") onHoverChange(project.name, true);
 	}
 
@@ -75,6 +80,7 @@ export function WorkRow({
 	}
 
 	function handleFocus(event: React.FocusEvent) {
+		setIsScreenRequested(true);
 		if (event.target.matches(":focus-visible"))
 			onFocusChange(project.name, true);
 	}
@@ -145,14 +151,16 @@ export function WorkRow({
 				)}
 			>
 				{project.kind === "phone" ? (
-					<PhonePreview project={project} />
+					<PhonePreview project={project}>{screen}</PhonePreview>
 				) : (
 					<BrowserPreview
 						project={project}
 						onClose={() => handleWindowAction(project, "close")}
 						onMinimize={() => handleWindowAction(project, "minimize")}
 						onZoom={() => handleWindowAction(project, "zoom")}
-					/>
+					>
+						{screen}
+					</BrowserPreview>
 				)}
 			</div>
 			{isPreviewShown && (
