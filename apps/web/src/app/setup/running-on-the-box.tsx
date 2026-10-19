@@ -3,13 +3,18 @@ import Image from "next/image";
 import { AppIcon } from "@/components/grouped-list/app-icon";
 import { GroupedList } from "@/components/grouped-list/grouped-list";
 import { ListRow } from "@/components/grouped-list/list-row";
-import type { ServerStats } from "@/entities/server-stats";
+import type { HomeLabSnapshot } from "@/entities/home-lab-stats";
 
 export type RunningOnTheBoxProps = {
-	stats: ServerStats;
+	snapshot: HomeLabSnapshot | null;
 };
 
-export function RunningOnTheBox({ stats }: RunningOnTheBoxProps) {
+export function RunningOnTheBox({ snapshot }: RunningOnTheBoxProps) {
+	const containersDescription =
+		snapshot === null
+			? "Counting…"
+			: `${snapshot.runningContainerCount} running.`;
+
 	return (
 		<GroupedList>
 			<ListRow
@@ -28,7 +33,7 @@ export function RunningOnTheBox({ stats }: RunningOnTheBoxProps) {
 					</AppIcon>
 				}
 				title="Docker containers"
-				description={`${stats.runningContainerCount} running.`}
+				description={containersDescription}
 			/>
 			<ListRow
 				leading={

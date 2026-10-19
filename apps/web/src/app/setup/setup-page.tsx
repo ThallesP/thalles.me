@@ -1,18 +1,12 @@
+import { Suspense } from "react";
 import { PageColumn } from "@/components/page/page-column";
 import { PageHeader } from "@/components/page/page-header";
-import { Section } from "@/components/section/section";
 import { SiteFooter } from "@/components/site-footer/site-footer";
-import { serverStats } from "@/content/setup-server";
 
-import { CodeFlowDiagram } from "./code-flow-diagram";
-import { RunningOnTheBox } from "./running-on-the-box";
+import { HomeLabSections } from "./home-lab-sections";
+import { LiveHomeLabSections } from "./live-home-lab-sections";
 
 export function SetupPage() {
-	const updatedAgo = new Intl.RelativeTimeFormat("en").format(
-		-serverStats.updatedMinutesAgo,
-		"minute",
-	);
-
 	return (
 		<PageColumn>
 			<PageHeader
@@ -37,18 +31,15 @@ export function SetupPage() {
 					. All my dev work runs on a Linux VM inside my Unraid home lab.
 				</p>
 			</section>
-			<Section title="Where my code actually runs">
-				<CodeFlowDiagram stats={serverStats} />
-			</Section>
-			<Section title="Running on the box">
-				<RunningOnTheBox stats={serverStats} />
-			</Section>
+			<Suspense fallback={<HomeLabSections snapshot={null} nowMs={0} />}>
+				<LiveHomeLabSections />
+			</Suspense>
 			<SiteFooter
 				sources={
 					<>
-						Server stats from the home lab.
+						Server stats from the home lab,
 						<br />
-						Updated {updatedAgo}.
+						pushed every minute.
 					</>
 				}
 			/>

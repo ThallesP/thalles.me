@@ -2,13 +2,39 @@ import Image from "next/image";
 
 import { GroupedList } from "@/components/grouped-list/grouped-list";
 import { Stat, StatGrid } from "@/components/stat-grid/stat-grid";
-import type { ServerStats } from "@/entities/server-stats";
+import type { HomeLabSnapshot } from "@/entities/home-lab-stats";
+import { formatTimeAgo } from "@/lib/format-time-ago";
 
-export type CodeFlowDiagramProps = {
-	stats: ServerStats;
+import {
+	formatGigabytes,
+	formatTerabytes,
+	formatUptime,
+} from "./home-lab-format";
+import type { HomeLabStatus } from "./home-lab-status";
+
+const devVmBadge: Record<
+	HomeLabStatus,
+	{ label: string; dotClassName: string }
+> = {
+	waiting: { label: "Checking", dotClassName: "bg-dot" },
+	online: { label: "Online", dotClassName: "bg-online" },
+	offline: { label: "Offline", dotClassName: "bg-destructive" },
 };
 
-export function CodeFlowDiagram({ stats }: CodeFlowDiagramProps) {
+export type CodeFlowDiagramProps = {
+	snapshot: HomeLabSnapshot | null;
+	status: HomeLabStatus;
+	nowMs: number;
+};
+
+export function CodeFlowDiagram({
+	snapshot,
+	status,
+	nowMs,
+}: CodeFlowDiagramProps) {
+	const isDevVmDown = status === "online" && snapshot?.isDevVmOnline === false;
+	const badge = devVmBadge[isDevVmDown ? "offline" : status];
+
 	return (
 		<GroupedList className="p-6">
 			<div className="flex flex-col md:flex-row md:items-center">
@@ -45,26 +71,49 @@ export function CodeFlowDiagram({ stats }: CodeFlowDiagramProps) {
 							Every repo, every build.
 						</div>
 						<div className="mt-2 inline-flex items-center gap-[5px] font-medium text-[13px]">
-							<span className="size-[7px] rounded-full bg-online" />
-							Online
+							<span
+								className={`size-[7px] rounded-full ${badge.dotClassName}`}
+							/>
+							{badge.label}
 						</div>
 					</div>
 				</div>
 			</div>
-			<StatGrid>
-				<Stat label="Uptime" value={`${stats.uptimeInDays} days`} />
-				<Stat label="CPU" value={`${stats.cpuUsagePercent}%`} />
-				<Stat
-					label="Memory"
-					value={`${stats.memoryUsedInGB} / ${stats.memoryTotalInGB} GB`}
-				/>
-				<Stat
-					label="Array"
-					value={`${stats.arrayUsedInTB} / ${stats.arrayTotalInTB} TB`}
-				/>
-			</StatGrid>
+			{snapshot === null ? (
+				<StatGrid>
+					<Stat label="Uptime" value="—" />
+					<Stat label="CPU" value="—" />
+					<Stat label="Memory" value="—" />
+					<Stat label="Array" value="—" />
+				</StatGrid>
+			) : (
+				<StatGrid>
+					<Stat
+						label="Uptime"
+						value={formatUptime(nowMs - snapshot.bootedAtMs)}
+					/>
+					<Stat
+						label="CPU"
+						value={`${Math.round(snapshot.cpuUsagePercent)}%`}
+					/>
+					<Stat
+						label="Memory"
+						value={`${formatGigabytes(snapshot.memoryUsedBytes)} / ${formatGigabytes(snapshot.memoryTotalBytes)} GB`}
+					/>
+					<Stat
+						label="Array"
+						value={`${formatTerabytes(snapshot.arrayUsedBytes)} / ${formatTerabytes(snapshot.arrayTotalBytes)} TB`}
+					/>
+				</StatGrid>
+			)}
 			<div className="mt-3.5 text-[13px] text-muted-foreground">
-				Live from the server. Last updated {stats.updatedMinutesAgo} min ago.
+				{status === "waiting" && "Waiting for the home lab to check in."}
+				{status === "online" &&
+					snapshot !== null &&
+					`Live from the server. Updated ${formatTimeAgo(nowMs - snapshot.receivedAtMs)}.`}
+				{status === "offline" &&
+					snapshot !== null &&
+					`The home lab is offline. Last seen ${formatTimeAgo(nowMs - snapshot.receivedAtMs)}.`}
 			</div>
 		</GroupedList>
 	);

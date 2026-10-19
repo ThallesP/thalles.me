@@ -5,8 +5,7 @@ import { ListRow } from "@/components/grouped-list/list-row";
 import { RepoMeta } from "@/components/repo-meta/repo-meta";
 import type { OpenSourceProject } from "@/content/projects-open-source";
 import type { RepoStats } from "@/entities/repo-stats";
-
-import { formatTimeAgo } from "./format-time-ago";
+import { formatTimeAgo } from "@/lib/format-time-ago";
 
 export type OpenSourceRowProps = {
 	project: OpenSourceProject;
