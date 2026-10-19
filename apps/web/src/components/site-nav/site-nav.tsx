@@ -39,10 +39,6 @@ export function SiteNav({ listening }: SiteNavProps) {
 						{label}
 					</Link>
 				))}
-				<span
-					aria-hidden
-					className="mx-1 hidden h-5 w-px bg-white/20 sm:block"
-				/>
 				<NowPlayingChip listening={listening} />
 			</nav>
 		</header>
