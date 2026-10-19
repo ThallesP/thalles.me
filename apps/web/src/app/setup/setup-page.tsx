@@ -34,15 +34,7 @@ export function SetupPage() {
 			<Suspense fallback={<HomeLabSections snapshot={null} nowMs={0} />}>
 				<LiveHomeLabSections />
 			</Suspense>
-			<SiteFooter
-				sources={
-					<>
-						Server stats from the home lab,
-						<br />
-						pushed every minute.
-					</>
-				}
-			/>
+			<SiteFooter sources={"Server stats from my home lab."} />
 		</PageColumn>
 	);
 }

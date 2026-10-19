@@ -5,6 +5,8 @@ import type { RecentTrack } from "@/entities/recent-track";
 import type { Track } from "@/entities/track";
 import { ENV } from "@/env.server";
 
+import { findITunesArtworkUrl } from "./find-itunes-artwork-url";
+
 import {
 	getLargestImageUrl,
 	LASTFM_USERNAME,
@@ -34,13 +36,20 @@ type RecentTracksResponse = {
 	};
 };
 
-function toTrack({ name, artist, album, image }: LastFmTrack): Track {
-	return {
-		title: name,
-		artist: artist["#text"],
-		album: album["#text"],
-		artworkUrl: getLargestImageUrl(image),
-	};
+async function toTrack({
+	name,
+	artist,
+	album,
+	image,
+}: LastFmTrack): Promise<Track> {
+	const artistName = artist["#text"];
+	const artworkUrl =
+		getLargestImageUrl(image) ??
+		(await findITunesArtworkUrl(`${artistName} ${name}`, "song").catch(
+			() => null,
+		));
+
+	return { title: name, artist: artistName, album: album["#text"], artworkUrl };
 }
 
 const cacheProfiles = {
@@ -69,19 +78,21 @@ export async function getRecentTracks(
 
 	const { recenttracks }: RecentTracksResponse = await response.json();
 	const [latestTrack] = recenttracks.track;
-	const recentTracks = recenttracks.track
-		.filter((track) => track !== latestTrack)
-		.filter((track) => track.date !== undefined)
-		.slice(0, 6)
-		.map(
-			(track): RecentTrack => ({
-				...toTrack(track),
-				playedAtMs: Number(track.date.uts) * 1000,
-			}),
-		);
+	const recentTracks = await Promise.all(
+		recenttracks.track
+			.filter((track) => track !== latestTrack)
+			.filter((track) => track.date !== undefined)
+			.slice(0, 6)
+			.map(
+				async (track): Promise<RecentTrack> => ({
+					...(await toTrack(track)),
+					playedAtMs: Number(track.date.uts) * 1000,
+				}),
+			),
+	);
 
 	return {
-		latestTrack: toTrack(latestTrack),
+		latestTrack: await toTrack(latestTrack),
 		isNowPlaying: latestTrack["@attr"] !== undefined,
 		recentTracks,
 		fetchedAtMs: Date.now(),

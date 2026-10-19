@@ -25,7 +25,7 @@ export function SiteNav({ listening }: SiteNavProps) {
 
 	return (
 		<header className="sticky top-0 z-50 flex justify-center px-3 py-3.5">
-			<nav className="flex items-center gap-0.5 rounded-full bg-card/60 p-1 shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.14),0_8px_24px_rgb(0_0_0/0.4)] backdrop-blur-xl backdrop-saturate-150 sm:gap-1 sm:p-1.5">
+			<nav className="flex items-center gap-0.5 rounded-full bg-card/90 p-1 shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.14),0_8px_24px_rgb(0_0_0/0.4)] backdrop-blur-xl backdrop-saturate-150 sm:gap-1 sm:p-1.5">
 				{links.map(({ href, label }) => (
 					<Link
 						key={href}

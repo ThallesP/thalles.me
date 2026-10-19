@@ -1,6 +1,7 @@
 import { Artwork } from "@/components/artwork/artwork";
 import { GroupedList } from "@/components/grouped-list/grouped-list";
 import type { RecentTrack } from "@/entities/recent-track";
+import { getSpotifySearchUrl } from "@/lib/spotify-search-url";
 
 import { formatPlayedAgo } from "./format";
 import { MusicRow } from "./music-row";
@@ -16,6 +17,7 @@ export function RecentlyPlayedList({ tracks, nowMs }: RecentlyPlayedListProps) {
 			{tracks.map((track) => (
 				<MusicRow
 					key={`${track.title}-${track.playedAtMs}`}
+					href={getSpotifySearchUrl(`${track.title} ${track.artist}`)}
 					leading={
 						<Artwork
 							src={track.artworkUrl}

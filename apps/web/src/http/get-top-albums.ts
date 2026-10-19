@@ -2,12 +2,14 @@ import { cacheLife } from "next/cache";
 
 import type { TopAlbum } from "@/entities/top-album";
 import { ENV } from "@/env.server";
-
+import { findITunesArtworkUrl } from "./find-itunes-artwork-url";
 import {
 	getLargestImageUrl,
 	LASTFM_USERNAME,
 	type LastFmImage,
 } from "./lastfm";
+
+const ARTWORK_FALLBACK_LIMIT = 5;
 
 type TopAlbumsResponse = {
 	topalbums: {
@@ -40,12 +42,26 @@ export async function getTopAlbums() {
 
 	const { topalbums }: TopAlbumsResponse = await response.json();
 
-	return topalbums.album.map(
+	const albums = topalbums.album.map(
 		({ name, artist, playcount, image }): TopAlbum => ({
 			title: name,
 			artist: artist.name,
 			artworkUrl: getLargestImageUrl(image),
 			playCount: Number(playcount),
+		}),
+	);
+
+	return Promise.all(
+		albums.map(async (album, index) => {
+			if (index >= ARTWORK_FALLBACK_LIMIT || album.artworkUrl !== null)
+				return album;
+
+			const artworkUrl = await findITunesArtworkUrl(
+				`${album.artist} ${album.title}`,
+				"album",
+			).catch(() => null);
+
+			return { ...album, artworkUrl };
 		}),
 	);
 }

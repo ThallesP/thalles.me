@@ -64,6 +64,16 @@
 	--radius-md: 0.75rem;
 	--radius-lg: 1rem;
 	--radius-xl: var(--radius);
+	--animate-equalizer: equalizer 0.9s ease-in-out infinite alternate;
+
+	@keyframes equalizer {
+		from {
+			transform: scaleY(0.3);
+		}
+		to {
+			transform: scaleY(1);
+		}
+	}
 }
 
 @layer base {

@@ -19,7 +19,7 @@ export const toolHistory: ToolHistoryStep[] = [
 	{
 		name: "Claude Code",
 		description:
-			"I flirted with it, but I prefer tools that wrap it. Opus also scored better inside Cursor than inside Claude Code, and I never figured out why.",
+			"I flirted with it, but I prefer tools that wrap it. Opus also scored better inside Cursor than inside Claude Code.",
 	},
 	{
 		name: "OpenCode",

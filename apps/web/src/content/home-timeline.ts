@@ -52,7 +52,7 @@ export const timeline: TimelineStep[] = [
 		period: "2021 – 22",
 		title: "FoxyB's Minecraft server",
 		description: [
-			"A site where FoxyB's subscribers linked their Twitch account. If they were subscribed, they got into her Minecraft server. Free, unlike most of those.",
+			"A site where FoxyB's subscribers linked their Twitch account. If they were subscribed, they got into her Minecraft server.",
 		],
 		projects: [],
 	},

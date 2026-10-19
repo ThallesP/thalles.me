@@ -23,8 +23,8 @@ export async function Intro() {
 			<a href="https://notus.team" className={inlineLinkClass}>
 				Notus Labs
 			</a>
-			, from Suzano, Brazil. The rest of the time I build the tools I wish
-			existed. I code from a{" "}
+			, from Brazil. The rest of the time I build the tools I wish existed. I
+			code from a{" "}
 			<Link href="/setup" className={inlineLinkClass}>
 				home lab
 			</Link>{" "}

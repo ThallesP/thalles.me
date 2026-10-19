@@ -7,7 +7,7 @@ import { SiteFooter } from "@/components/site-footer/site-footer";
 import { getTokenDaily } from "@/http/get-token-daily";
 import { getTokenProfile } from "@/http/get-token-profile";
 
-import { formatLongDate, formatShortDate, getLastDates } from "./format";
+import { formatShortDate, getLastDates } from "./format";
 import { HarnessesList } from "./harnesses-list";
 import { ModelsList } from "./models-list";
 import { TokenUsageCard } from "./token-usage-card";
@@ -35,10 +35,7 @@ export async function AIPage() {
 
 	return (
 		<PageColumn>
-			<PageHeader
-				title="AI"
-				subtitle={`What I use every day, and how much. Updated ${formatLongDate(until)}.`}
-			/>
+			<PageHeader title="AI" subtitle="What I use every day, and how much." />
 			<Section title="Models" action={shareNote}>
 				<ModelsList days={modelDays} />
 			</Section>
@@ -68,15 +65,7 @@ export async function AIPage() {
 					range={range}
 				/>
 			</Section>
-			<SiteFooter
-				sources={
-					<>
-						Token data from tokenmaxxing.sh.
-						<br />
-						Last 30 days, {range}.
-					</>
-				}
-			/>
+			<SiteFooter sources={"Token data from tokenmaxxing.sh."} />
 		</PageColumn>
 	);
 }

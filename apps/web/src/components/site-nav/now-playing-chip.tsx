@@ -27,9 +27,9 @@ export function NowPlayingChip({ listening }: NowPlayingChipProps) {
 			/>
 			{isNowPlaying && (
 				<span aria-hidden className="flex h-3 items-end gap-0.5">
-					<i className="h-1.5 w-0.5 rounded-full bg-online" />
-					<i className="h-3 w-0.5 rounded-full bg-online" />
-					<i className="h-2 w-0.5 rounded-full bg-online" />
+					<i className="h-3 w-0.5 origin-bottom animate-equalizer rounded-full bg-online [animation-delay:-0.4s] motion-reduce:h-1.5 motion-reduce:animate-none" />
+					<i className="h-3 w-0.5 origin-bottom animate-equalizer rounded-full bg-online [animation-duration:0.7s] motion-reduce:animate-none" />
+					<i className="h-3 w-0.5 origin-bottom animate-equalizer rounded-full bg-online [animation-delay:-0.2s] [animation-duration:1.1s] motion-reduce:h-2 motion-reduce:animate-none" />
 				</span>
 			)}
 			<span className="max-w-[150px] truncate">{track.title}</span>

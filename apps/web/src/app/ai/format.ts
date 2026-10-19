@@ -21,13 +21,6 @@ export function formatShortDate(dateYYYYMMDD: string) {
 	}).format(Date.parse(dateYYYYMMDD));
 }
 
-export function formatLongDate(dateYYYYMMDD: string) {
-	return new Intl.DateTimeFormat("en-US", {
-		dateStyle: "long",
-		timeZone: "UTC",
-	}).format(Date.parse(dateYYYYMMDD));
-}
-
 export function formatCompactNumber(value: number) {
 	return new Intl.NumberFormat("en-US", {
 		notation: "compact",

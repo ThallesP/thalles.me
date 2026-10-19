@@ -2,6 +2,7 @@ import { Artwork } from "@/components/artwork/artwork";
 import { GroupedList } from "@/components/grouped-list/grouped-list";
 import { findArtworkUrlByArtist, type TopAlbum } from "@/entities/top-album";
 import type { TopArtist } from "@/entities/top-artist";
+import { getSpotifySearchUrl } from "@/lib/spotify-search-url";
 
 import { MusicRow } from "./music-row";
 
@@ -18,6 +19,7 @@ export function TopArtistsList({ artists, albums }: TopArtistsListProps) {
 			{artists.map((artist, index) => (
 				<MusicRow
 					key={artist.name}
+					href={getSpotifySearchUrl(artist.name)}
 					leading={
 						<>
 							<span className="w-[18px] shrink-0 text-center font-semibold text-[15px] text-muted-foreground tabular-nums">

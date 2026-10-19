@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import { Artwork } from "@/components/artwork/artwork";
 import type { Track } from "@/entities/track";
+import { getSpotifySearchUrl } from "@/lib/spotify-search-url";
 
 export type NowPlayingCardProps = {
 	track: Track;
@@ -37,7 +38,14 @@ export function NowPlayingCard({ track, isNowPlaying }: NowPlayingCardProps) {
 					{isNowPlaying ? "Listening now" : "Last played"}
 				</div>
 				<div className="mt-3 font-bold text-[28px] leading-[1.1] tracking-[-0.025em] sm:text-[34px]">
-					{track.title}
+					<a
+						href={getSpotifySearchUrl(`${track.title} ${track.artist}`)}
+						target="_blank"
+						rel="noopener"
+						className="outline-none hover:underline focus-visible:underline"
+					>
+						{track.title}
+					</a>
 				</div>
 				<div className="mt-1.5 text-[19px] text-white/88 tracking-[-0.01em]">
 					{track.artist}

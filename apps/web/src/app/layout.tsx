@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 		default: "Thalles Passos",
 		template: "%s · Thalles Passos",
 	},
-	description: "Founding Engineer at Notus Labs, from Suzano, Brazil.",
+	description: "Founding Engineer at Notus Labs, from Brazil.",
 };
 
 export default async function RootLayout({

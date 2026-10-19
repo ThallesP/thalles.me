@@ -61,7 +61,7 @@ export function CodeFlowDiagram({
 						<NodeIcon src="/setup/unraid.svg" />
 						<div className="mt-3 font-semibold text-base">Unraid server</div>
 						<div className="text-muted-foreground text-sm leading-[1.35]">
-							The mainframe. Home lab in Suzano.
+							My home lab. It hosts the dev VM.
 						</div>
 					</div>
 					<div className="flex-1 rounded-2xl bg-card-raised p-4 shadow-[inset_0_0_0_0.5px_rgb(255_255_255/0.1)]">
@@ -108,9 +108,6 @@ export function CodeFlowDiagram({
 			)}
 			<div className="mt-3.5 text-[13px] text-muted-foreground">
 				{status === "waiting" && "Waiting for the home lab to check in."}
-				{status === "online" &&
-					snapshot !== null &&
-					`Live from the server. Updated ${formatTimeAgo(nowMs - snapshot.receivedAtMs)}.`}
 				{status === "offline" &&
 					snapshot !== null &&
 					`The home lab is offline. Last seen ${formatTimeAgo(nowMs - snapshot.receivedAtMs)}.`}

@@ -54,15 +54,7 @@ export async function MusicPage() {
 			<section className="mt-14">
 				<MusicMatchCard />
 			</section>
-			<SiteFooter
-				sources={
-					<>
-						Music from Last.fm, code from GitHub.
-						<br />
-						Updates live while you're here.
-					</>
-				}
-			/>
+			<SiteFooter sources={"Music from Last.fm."} />
 		</PageColumn>
 	);
 }
