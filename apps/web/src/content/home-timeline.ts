@@ -33,7 +33,7 @@ export const timeline: TimelineStep[] = [
 		projects: [],
 	},
 	{
-		period: "2017 – 18",
+		period: "2017–18",
 		title: "Sites about my friends",
 		description: [
 			"Plain HTML and CSS, mostly written on my phone. I can't say what they were about or I'd get cancelled.",
@@ -41,7 +41,7 @@ export const timeline: TimelineStep[] = [
 		projects: [],
 	},
 	{
-		period: "2019 – 20",
+		period: "2019–20",
 		title: "Discord bots",
 		description: [
 			"A friend made a bot that created channels, pinged someone and deleted them. I thought it was hilarious and tried to rebuild it. That's where I learned JavaScript and Node, and where I started taking this seriously.",
@@ -49,7 +49,7 @@ export const timeline: TimelineStep[] = [
 		projects: [],
 	},
 	{
-		period: "2021 – 22",
+		period: "2021–22",
 		title: "FoxyB's Minecraft server",
 		description: [
 			"A site where FoxyB's subscribers linked their Twitch account. If they were subscribed, they got into her Minecraft server.",
@@ -65,7 +65,7 @@ export const timeline: TimelineStep[] = [
 		projects: [],
 	},
 	{
-		period: "2023 – now",
+		period: "2023–now",
 		title: "Notus Labs",
 		description: [
 			"I joined before Notus had product-market fit, when we were building whatever kept us alive. Chainless was the first thing that found it, and we took off from there.",

@@ -14,8 +14,8 @@ export function TimelineStep({ step, isCurrent }: TimelineStepProps) {
 	const hasProjects = projects.length > 0;
 
 	return (
-		<li className="group/step grid grid-cols-[52px_22px_1fr] gap-x-2 sm:grid-cols-[92px_22px_1fr] sm:gap-x-3.5">
-			<div className="py-[18px] text-right text-[13px] text-muted-foreground tabular-nums sm:text-sm">
+		<li className="group/step grid grid-cols-[66px_22px_1fr] gap-x-2 sm:grid-cols-[92px_22px_1fr] sm:gap-x-3.5">
+			<div className="whitespace-nowrap py-[18px] text-right text-[13px] text-muted-foreground tabular-nums sm:text-sm">
 				{period}
 			</div>
 			<div

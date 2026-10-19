@@ -113,7 +113,7 @@ export function MusicMatch({ fanAlbums }: MusicMatchProps) {
 						autoComplete="off"
 						autoCapitalize="none"
 						spellCheck={false}
-						placeholder="Last.fm username or Spotify playlist link"
+						placeholder="Last.fm user or Spotify link"
 						aria-label="Last.fm username or Spotify playlist link"
 						className="min-w-0 flex-1 bg-transparent text-base text-foreground outline-none placeholder:text-muted-foreground"
 					/>

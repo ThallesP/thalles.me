@@ -29,7 +29,7 @@ export async function AIPage() {
 	const range = `${formatShortDate(since)} to ${formatShortDate(until)}`;
 	const shareNote = (
 		<span className="text-muted-foreground text-sm">
-			Share of my tokens, last 30 days
+			Token share, last 30 days
 		</span>
 	);
 
