@@ -4,10 +4,6 @@ import { cn } from "@thalles-me/ui/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import type { Listening } from "@/entities/listening";
-
-import { NowPlayingChip } from "./now-playing-chip";
-
 const links = [
 	{ href: "/", label: "Home" },
 	{ href: "/projects", label: "Projects" },
@@ -17,10 +13,10 @@ const links = [
 ] as const;
 
 export type SiteNavProps = {
-	listening: Listening;
+	children: React.ReactNode;
 };
 
-export function SiteNav({ listening }: SiteNavProps) {
+export function SiteNav({ children }: SiteNavProps) {
 	const pathname = usePathname();
 
 	return (
@@ -39,7 +35,7 @@ export function SiteNav({ listening }: SiteNavProps) {
 						{label}
 					</Link>
 				))}
-				<NowPlayingChip listening={listening} />
+				{children}
 			</nav>
 		</header>
 	);

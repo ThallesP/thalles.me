@@ -1,4 +1,5 @@
-import { cacheLife } from "next/cache";
+import { connection } from "next/server";
+import { Suspense } from "react";
 
 import { PageColumn } from "@/components/page/page-column";
 import { PageHeader } from "@/components/page/page-header";
@@ -15,11 +16,7 @@ import { OnRepeatShelf } from "./on-repeat-shelf";
 import { TopArtistsList } from "./top-artists-list";
 
 export async function MusicPage() {
-	"use cache";
-	cacheLife("minutes");
-
-	const [listening, topArtists, topAlbums] = await Promise.all([
-		getRecentTracks("page"),
+	const [topArtists, topAlbums] = await Promise.all([
 		getTopArtists({ username: LASTFM_USERNAME, period: "1month", limit: 6 }),
 		getTopAlbums(),
 	]);
@@ -31,7 +28,9 @@ export async function MusicPage() {
 				subtitle="Everything here comes from my Last.fm, live."
 			/>
 			<section className="mt-14">
-				<LiveNowPlayingCard listening={listening} />
+				<Suspense fallback={<div className="h-60 rounded-xl bg-card" />}>
+					<NowPlaying />
+				</Suspense>
 			</section>
 			<Section
 				title="Top artists this month"
@@ -50,7 +49,9 @@ export async function MusicPage() {
 				<OnRepeatShelf albums={topAlbums.slice(0, 5)} />
 			</Section>
 			<Section title="Recently played">
-				<LiveRecentlyPlayedList listening={listening} />
+				<Suspense>
+					<RecentlyPlayed />
+				</Suspense>
 			</Section>
 			<section className="mt-14">
 				<MusicMatchCard />
@@ -58,4 +59,16 @@ export async function MusicPage() {
 			<SiteFooter sources={"Music from Last.fm."} />
 		</PageColumn>
 	);
+}
+
+async function NowPlaying() {
+	await connection();
+
+	return <LiveNowPlayingCard listening={await getRecentTracks()} />;
+}
+
+async function RecentlyPlayed() {
+	await connection();
+
+	return <LiveRecentlyPlayedList listening={await getRecentTracks()} />;
 }

@@ -52,16 +52,9 @@ async function toTrack({
 	return { title: name, artist: artistName, album: album["#text"], artworkUrl };
 }
 
-const cacheProfiles = {
-	page: { stale: 300, revalidate: 60, expire: 3600 },
-	live: { stale: 30, revalidate: 10, expire: 60 },
-} as const;
-
-export async function getRecentTracks(
-	cacheProfile: keyof typeof cacheProfiles,
-): Promise<Listening> {
+export async function getRecentTracks(): Promise<Listening> {
 	"use cache";
-	cacheLife(cacheProfiles[cacheProfile]);
+	cacheLife({ stale: 30, revalidate: 10, expire: 60 });
 
 	const search = new URLSearchParams({
 		method: "user.getrecenttracks",
